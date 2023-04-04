@@ -92,29 +92,26 @@ function App() {
           </div>
         ))}
       </div>
-      { auth?.currentUser!==null && 
-          <div>
-          <h3>Add Movie</h3>
-          <div>
-            <input type='text' placeholder='Movie title...' 
-                onChange={e => setNewMovieTitle(e.target.value)} />
-          </div>
-          <div>
-            <input type='number' placeholder='Release date...' 
-                onChange={e => setNewReleaseDate(Number(e.target.value))} />
-          </div>
-          <div>
-            <input type='checkbox' 
-                checked={isNewMovieOscar} 
-                onChange={e => setIsNewMovieOscar(e.target.checked)} />
-            <label>Received an Oscar</label>
-          </div>
-          <div>
-            <button onClick={onSubmit}>Submit Movie</button>
-          </div>
+        <div>
+        <h3>Add Movie</h3>
+        <div>
+          <input type='text' placeholder='Movie title...' 
+              onChange={e => setNewMovieTitle(e.target.value)} />
         </div>
-      }
-      <hr />
+        <div>
+          <input type='number' placeholder='Release date...' 
+              onChange={e => setNewReleaseDate(Number(e.target.value))} />
+        </div>
+        <div>
+          <input type='checkbox' 
+              checked={isNewMovieOscar} 
+              onChange={e => setIsNewMovieOscar(e.target.checked)} />
+          <label>Received an Oscar</label>
+        </div>
+        <div>
+          <button onClick={onSubmit}>Submit Movie</button>
+        </div>
+      </div>    
       
     </div>
   );

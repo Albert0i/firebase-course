@@ -40,6 +40,7 @@ export const Auth = () => {
     const logoutOut = async () => {
         try {
             await signOut(auth)
+            console.log('bye')
         }
         catch (err) {
             console.log(err)

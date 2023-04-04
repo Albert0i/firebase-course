@@ -37,7 +37,8 @@ export const db = getFirestore(app)
         // Anyone can read from this project. 
         allow read: if true;
         // Only login user can create movie
-        allow write, update, delete: if request.auth != null && 
+        // write = create, update, delete 
+        allow create, update, delete: if request.auth != null && 
                                         request.auth.uid == request.resource.data.userID;
         
       }
