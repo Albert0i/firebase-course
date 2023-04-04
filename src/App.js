@@ -1,8 +1,9 @@
 import './App.css';
 import { useState, useEffect } from 'react'
 import { Auth } from './components/auth'
-import { db, auth } from './config/firebase'
+import { db, auth, storage } from './config/firebase'
 import { collection, doc, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore'
+import { ref, uploadBytes } from 'firebase/storage'
 
 function App() {
   const [movieList, setMovieList] = useState(null)
@@ -15,6 +16,9 @@ function App() {
 
   // Update title state
   const [updatedTitle, setUpdateTitle] = useState('')
+
+  // File upload state 
+  const [fileUpload, setFileUpload] = useState(null)
 
   const getMovieList = async () => {    
     try {
@@ -68,6 +72,16 @@ function App() {
     }
   }
 
+  const uploadFile = async () => {
+    if (!fileUpload) return 
+    const fileFolderRef = ref(storage, `projectFiles/${fileUpload.name}`)
+    try {
+      await uploadBytes(fileFolderRef, fileUpload)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     getMovieList()
   }, [])
@@ -76,6 +90,7 @@ function App() {
     <div className="App">
       <h3>Sign In/Up</h3>
       <Auth />
+
       <hr />
       <div>
         <h3>All movies</h3>                
@@ -88,11 +103,13 @@ function App() {
             <p>Date: {movie.releaseDate}</p>
             <button onClick={ () => deleteMovie(movie.id) }>Delete Movie</button>
             <input placeholder='new title...' onChange={e => setUpdateTitle(e.target.value)}  />
-            <button onClick={ () => updateMovieTitle(movie.id) }>Update Title</button>
+            <button onClick={ () => updateMovieTitle(movie.id) }>Update Title</button>            
           </div>
         ))}
       </div>
-        <div>
+
+      <hr /> 
+      <div>
         <h3>Add Movie</h3>
         <div>
           <input type='text' placeholder='Movie title...' 
@@ -111,7 +128,14 @@ function App() {
         <div>
           <button onClick={onSubmit}>Submit Movie</button>
         </div>
-      </div>    
+      </div>
+
+      <hr />
+      <div>
+        <h3>Upload file</h3>
+        <input type='file' onChange={ e => setFileUpload (e.target.files[0]) }/>
+        <button onClick={ uploadFile }>Upload files</button>
+      </div>
       
     </div>
   );
