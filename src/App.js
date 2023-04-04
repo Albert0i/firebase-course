@@ -50,6 +50,7 @@ function App() {
 
   const deleteMovie = async (id) => {
     try {
+      //console.log(auth.currentUser.uid)
       const movieDoc = doc(db, 'movies', id)
       await deleteDoc(movieDoc);
       getMovieList()
