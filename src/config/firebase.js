@@ -28,22 +28,44 @@ export const storage = getStorage(app)
 /*
     Firebase React Course For Beginners - Learn Firebase V9+ in 2 Hours
     https://youtu.be/2hR-uWjBAgw
+
+    Firebase > Docs > Reference | Interface: Resource
+    https://firebase.google.com/docs/reference/rules/rules.firestore.Resource?hl=en&authuser=0
 */
 /*
   Cloud Firestore Rules 
 
+  Original version from PedroTech:
   rules_version = '2';
   service cloud.firestore {
-    match /databases/{database}/documents {
-      match /{document=**} {
-        // Anyone can read from this project. 
-        allow read: if true;
-        // Only login user can create movie
-        // write = create, update, delete 
-        allow create, update, delete: if request.auth != null && 
-                                        request.auth.uid == request.resource.data.userID;
-        
+  match /databases/{database}/documents {
+    match /{document=**} {
+    	// Anyone can read from this project. 
+    	allow read: if true;
+      // Only login user can write movie
+      // write = create, update, delete 
+      allow write: if request.auth != null && 
+                      request.auth.uid == request.resource.data.userID;      
       }
     }
   }
+
+  New version: 
+  rules_version = '2';
+  service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+    	// Anyone can read from this project. 
+    	allow read: if true;
+      
+      // Only login user can create movie
+      allow create: if request.auth != null;
+      
+      // Only creator can update and delete his own movie 
+      allow update, delete: if request.auth != null && 
+                               request.auth.uid == resource.data.userID;
+      }
+    }
+  }
+
 */
